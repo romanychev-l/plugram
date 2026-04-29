@@ -53,9 +53,9 @@ def _atomic_write(path: Path, data: list[dict]) -> None:
 
 class DumpModule(Module):
     description = (
-        "Export channel posts to JSON. `.dump @channel` collects all messages "
-        "(incremental: subsequent runs only fetch new posts). Optional `N` limits a single call: "
-        "`.dump @channel 100`. `.dump reset @channel` drops the cached dump. "
+        "Export channel posts to JSON. `.dump @channel` collects all text messages "
+        "(incremental: subsequent runs only fetch new posts). Optional `N` caps a single call "
+        "at N text posts: `.dump @channel 100`. `.dump reset @channel` drops the cached dump. "
         "Cache lives in `data/dumps/`."
     )
     triggers = [Command("dump", aliases=["d"])]
@@ -109,7 +109,7 @@ class DumpModule(Module):
             await event.message.reply(f"Dumping {channel}...")
 
             new_messages: list[dict] = []
-            async for m in self.ctx.client.iter_messages(channel, min_id=last_id, limit=limit):
+            async for m in self.ctx.client.iter_messages(channel, min_id=last_id):
                 if not m.text:
                     continue
                 new_messages.append({
@@ -117,6 +117,8 @@ class DumpModule(Module):
                     "date": m.date.isoformat() if m.date else None,
                     "text": m.text,
                 })
+                if limit is not None and len(new_messages) >= limit:
+                    break
 
             combined = new_messages + existing
             _atomic_write(path, combined)

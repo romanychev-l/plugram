@@ -92,7 +92,7 @@ cd ~/plugram && uv run python -m plugram
 - `.twin <text>` or `.twin` (as a reply) — answer in your own writing style
 - `.twin stats` — corpus size
 - `.twin import @channel` — import channel posts into the corpus
-- `.dump @channel [N]` (alias `.d`) — export channel posts to JSON; incremental on subsequent runs, optional `N` caps a single call. The file is sent to the chat and cached at `data/dumps/<channel>.json`.
+- `.dump @channel [N]` (alias `.d`) — export channel text posts to JSON; incremental on subsequent runs, optional `N` caps a single call at N text posts (non-text messages are skipped and don't count). The file is sent to the chat and cached at `data/dumps/<channel>.json`.
 - `.dump reset @channel` — drop the cached dump so the next `.dump` re-fetches from scratch
 
 ## Modules
