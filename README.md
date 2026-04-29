@@ -92,6 +92,8 @@ cd ~/plugram && uv run python -m plugram
 - `.twin <text>` or `.twin` (as a reply) — answer in your own writing style
 - `.twin stats` — corpus size
 - `.twin import @channel` — import channel posts into the corpus
+- `.dump @channel [N]` (alias `.d`) — export channel posts to JSON; incremental on subsequent runs, optional `N` caps a single call. The file is sent to the chat and cached at `data/dumps/<channel>.json`.
+- `.dump reset @channel` — drop the cached dump so the next `.dump` re-fetches from scratch
 
 ## Modules
 
@@ -104,4 +106,5 @@ Module on/off state lives in `data/config.toml`. Defaults are baked into the cod
 | `tldr` | command | `.tldr` — summarize last N messages, a time window, or a replied-to message |
 | `fact` | command | `.fact` — objective analysis of a reply-chain argument |
 | `twin` | command + passive | `.twin` — reply in your style, plus background corpus collection |
+| `dump` | command | `.dump` / `.d` — export channel posts to JSON, incremental, with optional `reset` |
 | `manage` | command | `.mod` / `.help` — toggle modules |

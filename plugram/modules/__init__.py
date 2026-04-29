@@ -1,4 +1,5 @@
 from .ask import AskModule
+from .dump import DumpModule
 from .fact import FactModule
 from .manage import ManageModule
 from .tldr import TldrModule
@@ -12,5 +13,6 @@ REGISTRY: dict[str, type] = {
     "tldr": TldrModule,
     "fact": FactModule,
     "twin": TwinModule,
+    "dump": DumpModule,
     "manage": ManageModule,
 }

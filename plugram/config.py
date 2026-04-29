@@ -11,6 +11,7 @@ DEFAULT_CONFIG = {
         "tldr": {"enabled": True},
         "fact": {"enabled": True},
         "twin": {"enabled": False},
+        "dump": {"enabled": True},
         "manage": {"enabled": True},
     },
     "llm": {
