@@ -25,6 +25,31 @@ Then in any Telegram chat (Saved Messages is the safest place to play):
 .mod off translate   ← disable a module
 ```
 
+## Credentials
+
+You need three secrets before the first run.
+
+### `TELEGRAM_API_ID` and `TELEGRAM_API_HASH`
+
+These identify the *application* (not your account) to Telegram's MTProto API. They are free and personal — don't share them.
+
+1. Open [my.telegram.org](https://my.telegram.org) and log in with your phone number (Telegram sends a one-time code to your account).
+2. Click **API development tools**.
+3. Fill the form: any **App title** and **Short name** work (e.g. `plugram`). Pick **Desktop** or **Other** for platform. URL/description can be empty.
+4. Click **Create application**.
+5. Copy the resulting **App api_id** (a number) and **App api_hash** (a hex string) into `.env`.
+
+The page shows the values once — if you lose the hash, you can come back to the same page and reveal it again with your account.
+
+### `OPENROUTER_API_KEY`
+
+Used for all LLM calls (default model: `deepseek/deepseek-v3.2`).
+
+1. Sign up / log in at [openrouter.ai](https://openrouter.ai).
+2. Open [openrouter.ai/keys](https://openrouter.ai/keys) and click **Create Key**.
+3. Copy the key (shown only once) into `.env`.
+4. Top up some credits at [openrouter.ai/credits](https://openrouter.ai/credits) — DeepSeek is cheap, a couple of dollars lasts a long time.
+
 ## Install
 
 You'll need [uv](https://docs.astral.sh/uv/).
@@ -34,8 +59,7 @@ git clone <repo> ~/plugram
 cd ~/plugram
 uv sync
 cp .env.example .env
-# Fill in TELEGRAM_API_ID, TELEGRAM_API_HASH (https://my.telegram.org/apps)
-# and OPENROUTER_API_KEY (https://openrouter.ai/keys)
+$EDITOR .env   # paste the three values from the Credentials section above
 ```
 
 ## First run
