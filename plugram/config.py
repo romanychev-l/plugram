@@ -62,3 +62,7 @@ class Config:
         return self._data.get("llm", {}).get(
             "default_model", DEFAULT_CONFIG["llm"]["default_model"]
         )
+
+    def set_model(self, model: str) -> None:
+        self._data.setdefault("llm", {})["default_model"] = model
+        self.save()

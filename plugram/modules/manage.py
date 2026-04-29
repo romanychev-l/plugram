@@ -7,18 +7,26 @@ def _registry() -> dict:
 
 
 class ManageModule(Module):
-    description = "Manage modules. `.mod` lists, `.mod on/off <name>` toggles, `.help [name]` shows help."
-    triggers = [Command("mod"), Command("help")]
+    description = (
+        "Manage modules and LLM. `.mod` lists modules, `.mod on/off <name>` toggles them, "
+        "`.model [<openrouter-path>]` shows or changes the LLM, `.help [name]` shows help."
+    )
+    triggers = [Command("mod"), Command("help"), Command("model")]
 
     async def handle(self, event, command, args) -> None:
         args = (args or "").strip()
+
+        if command == "help":
+            await self._help(event, args)
+            return
+
+        if command == "model":
+            await self._model(event, args)
+            return
+
         parts = args.split(maxsplit=1)
         sub = parts[0].lower() if parts else ""
         rest = parts[1] if len(parts) > 1 else ""
-
-        if command == "help":
-            await self._help(event, sub)
-            return
 
         if not sub or sub == "list":
             await self._list(event)
@@ -56,6 +64,22 @@ class ManageModule(Module):
         state = "enabled" if enabled else "disabled"
         await event.message.edit(f"`{name}` {state}.")
 
+    async def _model(self, event, args: str) -> None:
+        name = args.strip()
+        if not name:
+            await event.message.edit(f"Current model: `{self.ctx.llm.model}`")
+            return
+        if "/" not in name or any(c.isspace() for c in name):
+            await event.message.edit(
+                "Expected an OpenRouter path like `vendor/model-name`, "
+                "e.g. `google/gemini-3-flash-preview`. "
+                "Browse models at https://openrouter.ai/models."
+            )
+            return
+        self.ctx.llm.model = name
+        self.ctx.config.set_model(name)
+        await event.message.edit(f"Model set to `{name}`.")
+
     async def _help(self, event, name: str) -> None:
         name = name.strip().lower()
         if name and name in _registry():
@@ -69,6 +93,6 @@ class ManageModule(Module):
         lines.append("")
         lines.append(
             "Toggle: `.mod on <name>` / `.mod off <name>`. "
-            "Commands use the `.` prefix."
+            "LLM: `.model [vendor/name]`. Commands use the `.` prefix."
         )
         await event.message.edit("\n".join(lines))

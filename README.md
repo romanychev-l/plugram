@@ -84,6 +84,8 @@ cd ~/plugram && uv run python -m plugram
 - `.help` or `.mod help` — module help
 - `.mod` — list modules with on/off status
 - `.mod on <name>` / `.mod off <name>` — enable/disable a module
+- `.model` — show the current OpenRouter model
+- `.model <vendor/name>` — switch the LLM (e.g. `.model google/gemini-3-flash-preview`); persisted to `data/config.toml`
 - `.ask <text>` (alias `.a`) — ask the LLM
 - `.tldr [N|Nm|Nh|Nd]` — summarize the last N messages, the last period, or a replied-to message
 - `.fact` (as a reply) — objective breakdown of an argument thread
